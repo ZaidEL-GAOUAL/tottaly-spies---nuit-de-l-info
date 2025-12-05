@@ -130,8 +130,8 @@ class Level4Scene extends Phaser.Scene {
 
     // ==================== GAME FLOW ====================
     startIntro() {
-        this.showDialogue('SYSTEM', 'LEVEL 4: DURABLE - Sustainable Computing');
-        this.showDialogue('SYSTEM', 'Mountains of e-waste poison the land...', () => this.spawnGoliath());
+        this.showDialogue('SYSTEM', 'LEVEL 4: DURABLE - The Right to Repair');
+        this.showDialogue('SYSTEM', 'E-waste is the fastest-growing waste stream in the world...', () => this.spawnGoliath());
     }
 
     spawnGoliath() {
@@ -148,8 +148,8 @@ class Level4Scene extends Phaser.Scene {
         this.goliath.setTexture('goliath_move');
 
         this.time.delayedCall(1000, () => {
-            this.showDialogue('GOLIATH', 'Who cares about old junk? Burn it! Ship it!');
-            this.showDialogue('GOLIATH', 'Out of sight, out of mind!', () => this.showTraps());
+            this.showDialogue('GOLIATH', 'Recycling is green! Smash it and melt it down!');
+            this.showDialogue('GOLIATH', 'Or ship it to Africa. Out of sight, out of mind!', () => this.showTraps());
         });
     }
 
@@ -223,9 +223,9 @@ class Level4Scene extends Phaser.Scene {
         });
 
         this.time.delayedCall(1500, () => {
-            this.showDialogue('MENTOR', 'Both paths destroy our planet!');
-            this.showDialogue('MENTOR', 'Reduce, Reuse, Repair, Recycle!');
-            this.showDialogue('MENTOR', 'Plant the Garden of Sustainability!', () => {
+            this.showDialogue('MENTOR', 'Recycling destroys. Repair extends life!');
+            this.showDialogue('MENTOR', 'A €50 RAM + SSD upgrade saves €1000 in new hardware.');
+            this.showDialogue('MENTOR', 'Visit a Repair Café! Plant the seeds of sustainability!', () => {
                 this.trapA.setVisible(false);
                 this.trapB.setVisible(false);
                 this.startGarden();
@@ -317,6 +317,7 @@ class Level4Scene extends Phaser.Scene {
 
         // Start harmony layer
         this.startMusic('harmony');
+        CodexManager.addCard('D');
 
         // Background becomes greener
         this.tweens.add({ targets: this.bg, fillColor: { from: 0x2a1a2a, to: 0x1a3a1a }, duration: 2000 });
@@ -325,7 +326,11 @@ class Level4Scene extends Phaser.Scene {
         this.showDialogue('SYSTEM', 'Artifact Acquired: [D] - Durable');
         this.showDialogue('SYSTEM', 'All 4 artifacts collected! The full symphony plays...', () => {
             this.tweens.add({ targets: itemD, x: 200, y: 50, scale: 0.08, duration: 1000 });
-            this.time.delayedCall(3000, () => this.scene.start('EndingScene'));
+            this.time.delayedCall(1500, () => {
+                CodexManager.showCardPopup(this, 'D', () => {
+                    this.scene.start('EndingScene');
+                });
+            });
         });
     }
 }

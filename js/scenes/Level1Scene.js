@@ -241,9 +241,9 @@ class Level1Scene extends Phaser.Scene {
 
     // ==================== GAME FLOW ====================
     startIntro() {
-        this.showDialogue('SYSTEM', 'CRITICAL ERROR. Windows 10 End of Support reached.');
-        this.showDialogue('SYSTEM', 'Security status: COMPROMISED');
-        this.showDialogue('SYSTEM', 'School budget: $0.00', () => this.spawnGoliath());
+        this.showDialogue('SYSTEM', 'CRITICAL: Windows 10 End of Support (October 2025)');
+        this.showDialogue('SYSTEM', 'Security patches: DISCONTINUED. Vulnerabilities: EXPOSED.');
+        this.showDialogue('SYSTEM', 'School IT Budget: €0.00', () => this.spawnGoliath());
     }
 
     spawnGoliath() {
@@ -261,10 +261,10 @@ class Level1Scene extends Phaser.Scene {
         });
 
         this.time.delayedCall(1000, () => {
-            this.showDialogue('GOLIATH', 'Well, well. Looks like your machines are obsolete, kid.');
-            this.showDialogue('GOLIATH', 'They are unsafe trash now. Pay up!');
-            this.showDialogue('HERO', 'But the hardware works fine! It\'s just the software...');
-            this.showDialogue('GOLIATH', 'SILENCE! Buy my new licenses or get out.', () => this.showTraps());
+            this.showDialogue('GOLIATH', 'It\'s not "broken", kid. It\'s "Legacy Hardware".');
+            this.showDialogue('GOLIATH', 'Industry standard says: BUY NEW!');
+            this.showDialogue('HERO', 'But the CPU and RAM are fine! It\'s just the OS that\'s heavy...');
+            this.showDialogue('GOLIATH', 'SILENCE! Pay €100,000 for new machines or get out!', () => this.showTraps());
         });
     }
 
@@ -273,11 +273,11 @@ class Level1Scene extends Phaser.Scene {
         this.trapA.setVisible(true);
         this.trapB.setVisible(true);
 
-        this.trapALabel = this.add.text(260, 440, 'BUY NEW PCs\n($50,000)', {
+        this.trapALabel = this.add.text(240, 440, 'BUY LICENSES\n(€20,000)', {
             fontFamily: 'Courier', fontSize: '12px', color: '#ff0000', align: 'center'
         }).setDepth(10);
 
-        this.trapBLabel = this.add.text(460, 440, 'TRASH THE PCs', {
+        this.trapBLabel = this.add.text(460, 440, 'TRASH THE PCs\n(E-Waste)', {
             fontFamily: 'Courier', fontSize: '12px', color: '#ff0000', align: 'center'
         }).setDepth(10);
 
@@ -297,13 +297,13 @@ class Level1Scene extends Phaser.Scene {
             this.cameras.main.shake(500, 0.03);
             this.tweens.add({ targets: this.goliath, scaleX: 0.3, scaleY: 0.3, duration: 500 });
 
-            const moneyText = this.add.text(300, 400, '-$50,000', {
+            const moneyText = this.add.text(300, 400, '-€20,000', {
                 fontFamily: 'Courier', fontSize: '24px', color: '#ff0000'
             }).setDepth(20);
             this.tweens.add({ targets: moneyText, y: 200, alpha: 0, duration: 2000, onComplete: () => moneyText.destroy() });
 
-            this.showDialogue('GOLIATH', 'HAHAHA! You bankrupted the school!');
-            this.showDialogue('SYSTEM', 'Insufficient funds. This path leads to ruin.', () => this.checkBothTraps());
+            this.showDialogue('GOLIATH', 'HAHAHA! Licenses: €20,000. New hardware: €100,000!');
+            this.showDialogue('SYSTEM', 'BUDGET BREAKDOWN: Total cost = €120,000. School: BANKRUPT.', () => this.checkBothTraps());
 
         } else if (trapType === 'B') {
             this.trapsTriggered.B = true;
@@ -321,7 +321,7 @@ class Level1Scene extends Phaser.Scene {
             this.spawnMentor();
         } else {
             this.gameState = 'EXPLORE';
-            const remaining = !this.trapsTriggered.A ? 'BUY NEW PCs' : 'TRASH THE PCs';
+            const remaining = !this.trapsTriggered.A ? 'BUY LICENSES' : 'TRASH THE PCs';
             this.showDialogue('SYSTEM', `You've seen one path. Now try: ${remaining}`);
         }
     }
@@ -344,8 +344,8 @@ class Level1Scene extends Phaser.Scene {
 
         this.time.delayedCall(1500, () => {
             this.showDialogue('MENTOR', 'Wait! Both paths lead to destruction.');
-            this.showDialogue('MENTOR', 'The machine has a soul. It does not need Windows to breathe.');
-            this.showDialogue('MENTOR', 'Give it the penguin\'s heart. Open the Terminal!', () => {
+            this.showDialogue('MENTOR', 'The hardware is fine! Windows is heavy... but Linux is light.');
+            this.showDialogue('MENTOR', 'Install PrimTux - a distro made for French schools. Open the Terminal!', () => {
                 this.trapA.setVisible(false);
                 this.trapB.setVisible(false);
                 this.trapALabel.setVisible(false);
@@ -367,13 +367,18 @@ class Level1Scene extends Phaser.Scene {
         this.tweens.add({ targets: itemN, alpha: 1, scale: 0.5, duration: 1000 });
 
         this.startMusic('bass');
+        CodexManager.addCard('N');
 
         this.showDialogue('SYSTEM', 'OS Updated. Performance: 100%. Cost: $0.');
         this.showDialogue('HERO', 'It\'s... it\'s fast again!');
         this.showDialogue('SYSTEM', 'Artifact Acquired: [N] - Numérique');
         this.showDialogue('SYSTEM', 'Level 1 Complete! The bass line begins...', () => {
             this.tweens.add({ targets: itemN, x: 50, y: 50, scale: 0.05, duration: 1000 });
-            this.time.delayedCall(3000, () => this.scene.start('Level2Scene'));
+            this.time.delayedCall(1500, () => {
+                CodexManager.showCardPopup(this, 'N', () => {
+                    this.scene.start('Level2Scene');
+                });
+            });
         });
     }
 }

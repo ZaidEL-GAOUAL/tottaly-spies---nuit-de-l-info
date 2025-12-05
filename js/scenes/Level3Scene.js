@@ -115,8 +115,8 @@ class Level3Scene extends Phaser.Scene {
 
     // ==================== GAME FLOW ====================
     startIntro() {
-        this.showDialogue('SYSTEM', 'LEVEL 3: RESPONSABLE - Data Privacy');
-        this.showDialogue('SYSTEM', 'Huge cables are sucking data into the dark cloud!', () => this.spawnGoliath());
+        this.showDialogue('SYSTEM', 'LEVEL 3: RESPONSABLE - Data Sovereignty');
+        this.showDialogue('SYSTEM', 'Student data is being harvested by foreign clouds...', () => this.spawnGoliath());
     }
 
     spawnGoliath() {
@@ -134,8 +134,8 @@ class Level3Scene extends Phaser.Scene {
         });
 
         this.time.delayedCall(1000, () => {
-            this.showDialogue('GOLIATH', 'I love student data! Grades, names, photos...');
-            this.showDialogue('GOLIATH', 'I\'ll sell it all to advertisers! Yum yum!', () => this.showTraps());
+            this.showDialogue('GOLIATH', 'Why host it yourself? My Cloud is FREE!');
+            this.showDialogue('GOLIATH', 'I just need to... peek at the health data. And grades. And photos.', () => this.showTraps());
         });
     }
 
@@ -198,9 +198,9 @@ class Level3Scene extends Phaser.Scene {
         });
 
         this.time.delayedCall(1500, () => {
-            this.showDialogue('MENTOR', 'Neither path protects your data!');
-            this.showDialogue('MENTOR', 'Your data is your life. Keep it on European soil.');
-            this.showDialogue('MENTOR', 'Activate the GDPR Shield!', () => {
+            this.showDialogue('MENTOR', 'Neither path protects student data!');
+            this.showDialogue('MENTOR', 'Use Apps.education.fr - sovereign tools hosted in France.');
+            this.showDialogue('MENTOR', 'RGPD says: sensitive data stays in Europe!', () => {
                 this.trapA.setVisible(false);
                 this.trapB.setVisible(false);
                 this.startDataPong();
@@ -271,13 +271,18 @@ class Level3Scene extends Phaser.Scene {
         const itemR = this.add.image(400, 300, 'item_r').setDepth(50).setScale(0.3).setAlpha(0);
         this.tweens.add({ targets: itemR, alpha: 1, scale: 0.5, duration: 1000 });
         this.startMusic('melody');
+        CodexManager.addCard('R');
         this.tweens.add({ targets: this.bg, fillColor: { from: 0x1a2a3a, to: 0x2a3a4a }, duration: 2000 });
 
         this.showDialogue('HERO', 'My data stays here. Encrypted and safe.');
         this.showDialogue('SYSTEM', 'Artifact Acquired: [R] - Responsable');
         this.showDialogue('SYSTEM', 'Level 3 Complete! The melody plays...', () => {
             this.tweens.add({ targets: itemR, x: 150, y: 50, scale: 0.08, duration: 1000 });
-            this.time.delayedCall(3000, () => this.scene.start('Level4Scene'));
+            this.time.delayedCall(1500, () => {
+                CodexManager.showCardPopup(this, 'R', () => {
+                    this.scene.start('Level4Scene');
+                });
+            });
         });
     }
 }

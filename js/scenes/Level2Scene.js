@@ -122,7 +122,7 @@ class Level2Scene extends Phaser.Scene {
             fontFamily: 'Courier', fontSize: '24px', color: '#00ff00'
         }).setOrigin(0.5);
         this.forgeContainer.add(this.forgeProgress);
-        this.forgeContainer.add(this.add.text(400, 80, 'Catch Open Source blocks! Avoid DRM!', {
+        this.forgeContainer.add(this.add.text(400, 80, 'Catch Open Source tools! Avoid proprietary locks!', {
             fontFamily: 'Courier', fontSize: '14px', color: '#ccaa00'
         }).setOrigin(0.5));
     }
@@ -130,7 +130,8 @@ class Level2Scene extends Phaser.Scene {
     // ==================== GAME FLOW ====================
     startIntro() {
         this.showDialogue('SYSTEM', 'LEVEL 2: INCLUSIF - The Bridge of Knowledge');
-        this.showDialogue('STUDENT', 'We can\'t cross! The toll booth costs €200 per person!', () => this.spawnGoliath());
+        this.showDialogue('STUDENT', 'I have dyslexia. The proprietary app won\'t let me change the font!');
+        this.showDialogue('STUDENT', 'Accessibility is locked behind a €200/year "Pro" feature...', () => this.spawnGoliath());
     }
 
     spawnGoliath() {
@@ -148,8 +149,8 @@ class Level2Scene extends Phaser.Scene {
         });
 
         this.time.delayedCall(1000, () => {
-            this.showDialogue('GOLIATH', 'Quality education isn\'t free, kid!');
-            this.showDialogue('GOLIATH', 'Pay the toll or leave them behind!', () => this.showTraps());
+            this.showDialogue('GOLIATH', 'Accessibility? That\'s a PRO feature, kid!');
+            this.showDialogue('GOLIATH', 'Pay the subscription or stay excluded!', () => this.showTraps());
         });
     }
 
@@ -247,8 +248,8 @@ class Level2Scene extends Phaser.Scene {
 
         this.time.delayedCall(1500, () => {
             this.showDialogue('MENTOR', 'Both paths lead to exclusion!');
-            this.showDialogue('MENTOR', 'Knowledge increases when shared. Use the Forge!');
-            this.showDialogue('MENTOR', 'Build a Bridge of Commons with Open Source!', () => {
+            this.showDialogue('MENTOR', 'The Forge des Communs lets teachers share tools freely.');
+            this.showDialogue('MENTOR', 'Build a Bridge with Open Source: Moodle, Peertube, OpenDyslexic!', () => {
                 this.trapA.setVisible(false);
                 this.trapB.setVisible(false);
                 this.trapALabel.setVisible(false);
@@ -274,7 +275,10 @@ class Level2Scene extends Phaser.Scene {
 
         const isDRM = Math.random() < 0.3;
         const x = Phaser.Math.Between(100, 700);
-        const blockText = isDRM ? '🔒 DRM' : ['📖 CC', '📄 ODT', '🌐 Wiki'][Phaser.Math.Between(0, 2)];
+        // Real Open Source tools vs Proprietary locks
+        const goodTools = ['📚 Moodle', '🎬 Peertube', '🔤 OpenDyslexic', '📝 LibreOffice'];
+        const badTools = ['🔒 Locked PDF', '☁️ Proprietary Cloud', '👁️ User Tracking'];
+        const blockText = isDRM ? badTools[Phaser.Math.Between(0, badTools.length - 1)] : goodTools[Phaser.Math.Between(0, goodTools.length - 1)];
 
         const block = this.add.text(x, -50, blockText, {
             fontFamily: 'Courier', fontSize: '20px', color: isDRM ? '#ff0000' : '#00ff00',
@@ -326,6 +330,7 @@ class Level2Scene extends Phaser.Scene {
         const itemI = this.add.image(400, 300, 'item_i').setDepth(50).setScale(0.3).setAlpha(0);
         this.tweens.add({ targets: itemI, alpha: 1, scale: 0.5, duration: 1000 });
         this.startMusic('drums');
+        CodexManager.addCard('I');
         this.tweens.add({ targets: this.bg, fillColor: { from: 0x2a2a1a, to: 0x3a3a2a }, duration: 2000 });
 
         this.showDialogue('SYSTEM', 'Bridge Complete! The students cross!');
@@ -333,7 +338,11 @@ class Level2Scene extends Phaser.Scene {
         this.showDialogue('SYSTEM', 'Artifact Acquired: [I] - Inclusif');
         this.showDialogue('SYSTEM', 'Level 2 Complete! The drums kick in...', () => {
             this.tweens.add({ targets: itemI, x: 100, y: 50, scale: 0.1, duration: 1000 });
-            this.time.delayedCall(3000, () => this.scene.start('Level3Scene'));
+            this.time.delayedCall(1500, () => {
+                CodexManager.showCardPopup(this, 'I', () => {
+                    this.scene.start('Level3Scene');
+                });
+            });
         });
     }
 }
