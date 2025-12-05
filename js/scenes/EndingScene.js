@@ -82,7 +82,7 @@ class EndingScene extends Phaser.Scene {
         nirdLink.on('pointerover', () => nirdLink.setStyle({ color: '#ffff00' }));
         nirdLink.on('pointerout', () => nirdLink.setStyle({ color: '#00ff00' }));
         nirdLink.on('pointerdown', () => {
-            window.open('https://nird.fr', '_blank');
+            window.open('https://nird.forge.apps.education.fr/', '_blank');
         });
 
         // Restart button
